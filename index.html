@@ -10,7 +10,6 @@
     <script type="module">
         let currentPageIndex = 0;
         
-        // --- Journal Content Data ---
         const journalContent = [
             { id: 'cover', title: "Journal Entry Log", category: "Task #1: Loving Yourself", content: `
                 <div class="space-y-4 pt-4 text-center">
@@ -23,11 +22,11 @@
             ` },
             { id: 'describe', title: "a. Describe Yourself (Official)", category: "Character Profile", content: `
                 <p class="text-sm italic mb-4" style="color: #666;">My official character description:</p>
-                <p class="text-base leading-relaxed tracking-wide" style="color: var(--text-ink);">I’m someone who is curious, creative, and always looking for ways to improve. I enjoy learning new things, even when it’s challenging. Sometimes I overthink, but it just shows I care deeply about what I do.</p>
+                <p class="text-base leading-relaxed ruled-paragraph" style="color: var(--text-ink);">I’m someone who is curious, creative, and always looking for ways to improve. I enjoy learning new things, even when it’s challenging. Sometimes I overthink, but it just shows I care deeply about what I do.</p>
                 ` },
             { id: 'describe_gang', title: "a. Describe Myself (Inner Voice)", category: "Raw Footage", content: `
                 <p class="text-sm italic mb-4" style="color: #666;">The director's cut narration:</p>
-                <p class="text-base leading-relaxed tracking-wide" style="color: var(--text-ink);">They’re the type of person who’s always tryna level up. They get curious about a ton of stuff and stay learning new knowledge especially when it switches up how they think. They can definitely get creative like flipping small random ideas into something that hits deep. But real talk coming up with brand new ideas is tough for them. They also tend to overthink everything and doubt if their ideas even got the juice. Still that just proves they care about the work and the outcome they’re chasing. They mess with writing solving problems and creating stuff so you could call them a hands on type of person no doubt. They’re patient most of the time but when they get stuck they’ll get tight. Even then they usually push past it because they’re stubborn and they hate to fold. They really respect people who are genuine and honest and they keep that same energy. They know they ain’t flawless. They procrastinate and sometimes lose confidence in their own voice and they can be way too hard on themselves. But they’re learning to accept those flaws while still being grateful for who they already am.</p>
+                <p class="text-base leading-relaxed ruled-paragraph" style="color: var(--text-ink);">They’re the type of person who’s always tryna level up. They get curious about a ton of stuff and stay learning new knowledge especially when it switches up how they think. They can definitely get creative like flipping small random ideas into something that hits deep. But real talk coming up with brand new ideas is tough for them. They also tend to overthink everything and doubt if their ideas even got the juice. Still that just proves they care about the work and the outcome they’re chasing. They mess with writing solving problems and creating stuff so you could call them a hands on type of person no doubt. They’re patient most of the time but when they get stuck they’ll get tight. Even then they usually push past it because they’re stubborn and they hate to fold. They really respect people who are genuine and honest and they keep that same energy. They know they ain’t flawless. They procrastinate and sometimes lose confidence in their own voice and they can be way too hard on themselves. But they’re learning to accept those flaws while still being grateful for who they already am.</p>
                 ` },
             { id: 'quotes', title: "b. Favorite Dialogue", category: "Inspiration", content: [
                 "“Growth is growth, no matter how small.”",
@@ -51,7 +50,7 @@
                 "Creativity in both practical and artistic things."
             ]},
             { id: 'poem', title: "f. Self-Reflection Poem", category: "Monologue", content: `
-                <p class="whitespace-pre-line leading-relaxed text-center italic mt-4" style="color: var(--text-ink);">
+                <p class="whitespace-pre-line leading-relaxed text-center italic mt-4 ruled-paragraph" style="color: var(--text-ink);">
                     He walked through days of questions and doubts,
                     Carrying dreams that whispered loud.
                     Behind the struggles, a fire still burned,
@@ -66,7 +65,7 @@
                 "Not always being confident enough."
             ]},
             { id: 'respect', title: "h. If I Upgraded My Character...", category: "Commitment", content: `
-                <p class="text-sm font-semibold italic mt-4" style="color: var(--text-ink);">
+                <p class="text-sm font-semibold italic mt-4 ruled-paragraph" style="color: var(--text-ink);">
                     …I trusted myself more and stopped comparing myself to others.
                 </p>
                 ` },
@@ -96,12 +95,11 @@
             ]},
         ];
 
-        // --- Utility Functions ---
+
         const formatContent = (content) => {
             if (Array.isArray(content)) {
-                // The dot-icon uses the custom CSS style set later
                 const dotIcon = `<svg class="w-2.5 h-2.5 mr-3 mt-1 dot-icon flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/></svg>`;
-                return `<ul class="list-ruled mt-0 text-base" style="color: var(--text-ink);">${content.map(item => `<li class="flex items-start ruled-list-item">${dotIcon}<span>${item}</span></li>`).join('')}</ul>`;
+                return `<ul class="list-ruled mt-4 text-base" style="color: var(--text-ink);">${content.map(item => `<li class="flex items-start ruled-list-item">${dotIcon}<span>${item}</span></li>`).join('')}</ul>`;
             }
             return content;
         };
@@ -136,7 +134,7 @@
             }
         };
 
-        // --- Initialization ---
+
         window.onload = () => {
             renderPage(currentPageIndex);
 
@@ -146,18 +144,16 @@
     </script>
 
     <style>
-        /* --- CSS Variables: Journal Theme --- */
         :root {
             --bg-light: #fcfbf8; 
             --card-paper: #fffcf3; 
             --accent-dark: #4A4A4A; 
             --line-color: #e0e0e0; 
             --text-ink: #2c2c2c;
-            --page-line-height: 2.2rem; /* Spacing between ruled lines */
-            --text-line-height: 1.5rem; /* Standard text height */
+            --page-line-height: 2.2rem; 
+            --text-line-height: 1.5rem; 
         }
         
-        /* --- Base & Body Styles --- */
         body {
             font-family: 'Merriweather', serif; 
             background: var(--bg-light);
@@ -170,17 +166,10 @@
             padding: 20px;
         }
         
-        /* --- Profile Header Styles --- */
-        .profile-card {
-            background-color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
-        }
-        .profile-card h3, .profile-card p {
-            color: var(--text-ink);
+        .dot-icon {
+            color: #5B5B5B; 
         }
 
-        /* --- Journal Container (The Book) --- */
         #journalContainer {
             width: 90%;
             max-width: 850px; 
@@ -195,7 +184,6 @@
             overflow: hidden; 
         }
         
-        /* --- Journal Page (The Paper) --- */
         #journal-page {
             position: relative;
             width: 100%;
@@ -208,32 +196,33 @@
             flex-direction: column;
         }
 
-        /* --- Page Headers & Titles --- */
         .page-header {
             border-bottom: 1px solid #ddd; 
             padding-bottom: 1rem;
             margin-bottom: 2rem;
         }
+        
         .pageTitle {
             font-size: 2rem;
             font-weight: 700;
             line-height: 1.1;
             color: var(--text-ink);
         }
+        
         .pageCategory {
             color: #888; 
             text-transform: none; 
             font-style: italic;
         }
+        
         .pageNumber {
             color: #888;
         }
 
-        /* --- Page Content and Ruled Lines --- */
         .pageContent {
             position: relative;
             padding-top: 10px; 
-            line-height: var(--page-line-height); /* Controls background ruling */
+            line-height: var(--page-line-height); 
             overflow-y: auto;
             flex-grow: 1;
         }
@@ -246,7 +235,6 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            /* Creates the repeating horizontal line pattern */
             background: repeating-linear-gradient(
                 to bottom,
                 transparent,
@@ -256,13 +244,18 @@
             );
         }
         
-        /* FIX: Cover Page specific adjustment to prevent title overlap */
+        .pageContent p {
+            line-height: var(--page-line-height); 
+            margin-bottom: 0; 
+            padding-bottom: 0;
+        }
+
         #journal-page .pageContent .text-center > h2 {
             margin-top: calc(var(--page-line-height) / 2); 
             margin-bottom: calc(var(--page-line-height) / 2); 
+            line-height: 1.1; 
         }
         
-        /* FIX: List Item Alignment for Ruled Lines */
         .pageContent .list-ruled {
             list-style: none;
             padding: 0;
@@ -270,7 +263,7 @@
         }
 
         .pageContent .ruled-list-item {
-            line-height: var(--page-line-height); /* Must match ruling height for perfect alignment */
+            line-height: var(--page-line-height); 
             margin-bottom: 0.5rem; 
             padding-bottom: 0;
         }
@@ -278,16 +271,22 @@
         .pageContent .ruled-list-item span {
             line-height: var(--text-line-height); 
             display: block;
-            /* Vertically centers the text within the 2.2rem rule space */
             padding-top: calc((var(--page-line-height) - var(--text-line-height)) / 2); 
         }
         
         .pageContent .ruled-list-item .dot-icon {
             margin-top: 0.8rem;
-            color: #5B5B5B; 
         }
 
-        /* --- Navigation Button Styles --- */
+        .profile-card {
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+        .profile-card h3, .profile-card p {
+            color: var(--text-ink);
+        }
+
         .nav-btn {
             background-color: transparent;
             color: var(--accent-dark);
@@ -309,7 +308,6 @@
             opacity: 1;
         }
 
-        /* --- Responsive Styles --- */
         @media (max-width: 768px) {
             #journalContainer {
                 height: 95vh;
