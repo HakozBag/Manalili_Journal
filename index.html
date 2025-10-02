@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Reflection Journal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script type="module">
+        let currentPageIndex = 0;
+        
+        // --- Journal Content Data ---
+        const journalContent = [
+            { id: 'cover', title: "Journal Entry Log", category: "Task #1: Loving Yourself", content: `
+                <div class="space-y-4 pt-4 text-center">
+                    <h2 class="text-4xl font-extrabold tracking-tight" style="color: var(--text-ink);">The Self-Reflection Journal</h2>
+                    <p class="max-w-sm mx-auto" style="color: #666;">Document your inner monologue, review life chapters, and define your character.</p>
+                    <div class="text-sm pt-4 font-medium tracking-wider" style="color: #888;">
+                        STATUS: ENTRY 1 INITIATED
+                    </div>
+                </div>
+            ` },
+            { id: 'describe', title: "a. Describe Yourself (Official)", category: "Character Profile", content: `
+                <p class="text-sm italic mb-4" style="color: #666;">My official character description:</p>
+                <p class="text-base leading-relaxed tracking-wide" style="color: var(--text-ink);">I’m someone who is curious, creative, and always looking for ways to improve. I enjoy learning new things, even when it’s challenging. Sometimes I overthink, but it just shows I care deeply about what I do.</p>
+                ` },
+            { id: 'describe_gang', title: "a. Describe Myself (Inner Voice)", category: "Raw Footage", content: `
+                <p class="text-sm italic mb-4" style="color: #666;">The director's cut narration:</p>
+                <p class="text-base leading-relaxed tracking-wide" style="color: var(--text-ink);">They’re the type of person who’s always tryna level up. They get curious about a ton of stuff and stay learning new knowledge especially when it switches up how they think. They can definitely get creative like flipping small random ideas into something that hits deep. But real talk coming up with brand new ideas is tough for them. They also tend to overthink everything and doubt if their ideas even got the juice. Still that just proves they care about the work and the outcome they’re chasing. They mess with writing solving problems and creating stuff so you could call them a hands on type of person no doubt. They’re patient most of the time but when they get stuck they’ll get tight. Even then they usually push past it because they’re stubborn and they hate to fold. They really respect people who are genuine and honest and they keep that same energy. They know they ain’t flawless. They procrastinate and sometimes lose confidence in their own voice and they can be way too hard on themselves. But they’re learning to accept those flaws while still being grateful for who they already am.</p>
+                ` },
+            { id: 'quotes', title: "b. Favorite Dialogue", category: "Inspiration", content: [
+                "“Growth is growth, no matter how small.”",
+                "“The only person you should try to be better than is the person you were yesterday.”"
+            ]},
+            { id: 'likes', title: "c. Core Strengths", category: "Power-Ups", content: [
+                "I’m creative and resourceful.",
+                "I have a good sense of humor.",
+                "I care for the people close to me.",
+                "I can adapt to different situations.",
+                "I don’t easily give up when things get hard."
+            ]},
+            { id: 'dislikes', title: "d. Vulnerability Patches", category: "Bugs & Features", content: [
+                "I sometimes procrastinate.",
+                "I get insecure about how I express myself.",
+                "I can be too hard on myself."
+            ]},
+            { id: 'talents', title: "e. Special Talents", category: "Skill Tree", content: [
+                "Writing and expressing ideas.",
+                "Problem-solving in unique ways.",
+                "Creativity in both practical and artistic things."
+            ]},
+            { id: 'poem', title: "f. Self-Reflection Poem", category: "Monologue", content: `
+                <p class="whitespace-pre-line leading-relaxed text-center italic mt-4" style="color: var(--text-ink);">
+                    He walked through days of questions and doubts,
+                    Carrying dreams that whispered loud.
+                    Behind the struggles, a fire still burned,
+                    A reminder of lessons he’s slowly learned.
+                    Though shadows came, light never left,
+                    He kept moving forward, step by step.
+                </p>
+                ` },
+            { id: 'conscious', title: "g. Conscious Weaknesses", category: "Known Flaws", content: [
+                "How I sound when I speak.",
+                "Making mistakes in front of others.",
+                "Not always being confident enough."
+            ]},
+            { id: 'respect', title: "h. If I Upgraded My Character...", category: "Commitment", content: `
+                <p class="text-sm font-semibold italic mt-4" style="color: var(--text-ink);">
+                    …I trusted myself more and stopped comparing myself to others.
+                </p>
+                ` },
+            { id: 'forgiveness', title: "i. Healing Dialogue", category: "Post-Production", content: `
+                <ul class="list-ruled mt-0 text-sm" style="color: var(--text-ink);">
+                    <li class="ruled-list-item"><span class="font-semibold" style="color: var(--text-ink);">Target for Forgiveness:</span> myself, for being too harsh sometimes.</li>
+                    <li class="ruled-list-item"><span class="font-semibold" style="color: var(--text-ink);">Who should forgive me:</span> people I may have unintentionally hurt.</li>
+                    <li class="ruled-list-item"><span class="font-semibold" style="color: var(--text-ink);">Self-Forgiveness Subject:</span> not always believing in my own worth.</li>
+                </ul>
+                ` },
+            { id: 'feelings', title: "j. Hard-to-Accept Feelings", category: "Emotional Check", content: [
+                "Feeling insecure.",
+                "Feeling lonely.",
+                "Feeling like I’m not enough."
+            ]},
+            { id: 'difficult', title: "k. Runtime Complications", category: "Growth Areas", content: [
+                "Speaking confidently in public.",
+                "Managing pressure and overthinking.",
+                "Showing my real feelings sometimes."
+            ]},
+            { id: 'grateful', title: "l. Grateful Credits", category: "Acknowledgements", content: [
+                "My family.",
+                "My friends.",
+                "The opportunities I get to learn and grow.",
+                "My resilience when things gets tough.",
+                "The small joys in life, like music, games, and laughter."
+            ]},
+        ];
+
+        // --- Utility Functions ---
+        const formatContent = (content) => {
+            if (Array.isArray(content)) {
+                // The dot-icon uses the custom CSS style set later
+                const dotIcon = `<svg class="w-2.5 h-2.5 mr-3 mt-1 dot-icon flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12"/></svg>`;
+                return `<ul class="list-ruled mt-0 text-base" style="color: var(--text-ink);">${content.map(item => `<li class="flex items-start ruled-list-item">${dotIcon}<span>${item}</span></li>`).join('')}</ul>`;
+            }
+            return content;
+        };
+
+        const renderContentToFace = (index, faceElement) => {
+            const page = journalContent[index];
+            if (!page) return;
+
+            faceElement.querySelector('.pageTitle').innerHTML = page.title;
+            faceElement.querySelector('.pageCategory').innerHTML = page.category;
+            faceElement.querySelector('.pageContent').innerHTML = formatContent(page.content);
+            faceElement.querySelector('.pageNumber').innerHTML = `Page ${index + 1} / ${journalContent.length}`;
+        };
+
+        const renderPage = (index) => {
+            const pageElement = document.getElementById('journal-page');
+            
+            if (pageElement) {
+                renderContentToFace(index, pageElement);
+            }
+            
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === journalContent.length - 1;
+        };
+
+        const navigate = (direction) => {
+            const newIndex = currentPageIndex + direction;
+
+            if (newIndex >= 0 && newIndex < journalContent.length) {
+                currentPageIndex = newIndex;
+                renderPage(currentPageIndex);
+            }
+        };
+
+        // --- Initialization ---
+        window.onload = () => {
+            renderPage(currentPageIndex);
+
+            document.getElementById('prevBtn').addEventListener('click', () => navigate(-1));
+            document.getElementById('nextBtn').addEventListener('click', () => navigate(1));
+        };
+    </script>
+
+    <style>
+        /* --- CSS Variables: Journal Theme --- */
+        :root {
+            --bg-light: #fcfbf8; 
+            --card-paper: #fffcf3; 
+            --accent-dark: #4A4A4A; 
+            --line-color: #e0e0e0; 
+            --text-ink: #2c2c2c;
+            --page-line-height: 2.2rem; /* Spacing between ruled lines */
+            --text-line-height: 1.5rem; /* Standard text height */
+        }
+        
+        /* --- Base & Body Styles --- */
+        body {
+            font-family: 'Merriweather', serif; 
+            background: var(--bg-light);
+            color: var(--text-ink);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        /* --- Profile Header Styles --- */
+        .profile-card {
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+        .profile-card h3, .profile-card p {
+            color: var(--text-ink);
+        }
+
+        /* --- Journal Container (The Book) --- */
+        #journalContainer {
+            width: 90%;
+            max-width: 850px; 
+            height: 85vh; 
+            max-height: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            position: relative;
+            z-index: 1;
+            background: transparent; 
+            overflow: hidden; 
+        }
+        
+        /* --- Journal Page (The Paper) --- */
+        #journal-page {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: var(--card-paper); 
+            border-radius: 4px;
+            padding: 2.5rem 3rem; 
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Page Headers & Titles --- */
+        .page-header {
+            border-bottom: 1px solid #ddd; 
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+        .pageTitle {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-ink);
+        }
+        .pageCategory {
+            color: #888; 
+            text-transform: none; 
+            font-style: italic;
+        }
+        .pageNumber {
+            color: #888;
+        }
+
+        /* --- Page Content and Ruled Lines --- */
+        .pageContent {
+            position: relative;
+            padding-top: 10px; 
+            line-height: var(--page-line-height); /* Controls background ruling */
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .pageContent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            /* Creates the repeating horizontal line pattern */
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent calc(var(--page-line-height) - 1px),
+                var(--line-color) calc(var(--page-line-height) - 1px),
+                var(--line-color) var(--page-line-height)
+            );
+        }
+        
+        /* FIX: Cover Page specific adjustment to prevent title overlap */
+        #journal-page .pageContent .text-center > h2 {
+            margin-top: calc(var(--page-line-height) / 2); 
+            margin-bottom: calc(var(--page-line-height) / 2); 
+        }
+        
+        /* FIX: List Item Alignment for Ruled Lines */
+        .pageContent .list-ruled {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pageContent .ruled-list-item {
+            line-height: var(--page-line-height); /* Must match ruling height for perfect alignment */
+            margin-bottom: 0.5rem; 
+            padding-bottom: 0;
+        }
+
+        .pageContent .ruled-list-item span {
+            line-height: var(--text-line-height); 
+            display: block;
+            /* Vertically centers the text within the 2.2rem rule space */
+            padding-top: calc((var(--page-line-height) - var(--text-line-height)) / 2); 
+        }
+        
+        .pageContent .ruled-list-item .dot-icon {
+            margin-top: 0.8rem;
+            color: #5B5B5B; 
+        }
+
+        /* --- Navigation Button Styles --- */
+        .nav-btn {
+            background-color: transparent;
+            color: var(--accent-dark);
+            border: 2px solid var(--accent-dark);
+            font-weight: 700;
+            transition: all 0.2s ease-in-out;
+            box-shadow: none;
+        }
+        .nav-btn:hover:not(:disabled) {
+            background-color: rgba(74, 74, 74, 0.1);
+            transform: none; 
+            box-shadow: none;
+        }
+        .nav-btn:disabled {
+            background-color: transparent;
+            border-color: #ccc;
+            color: #ccc;
+            cursor: not-allowed;
+            opacity: 1;
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 768px) {
+            #journalContainer {
+                height: 95vh;
+                max-height: none;
+            }
+            #journal-page {
+                padding: 1.5rem;
+            }
+            .pageTitle {
+                 font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body id="app-body">
+
+    <div class="w-full max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mb-6 flex justify-center">
+        <div class="flex items-center profile-card p-5 rounded-xl transition transform hover:scale-[1.01] duration-300">
+            <div class="text-center mr-6">
+                <p class="text-sm uppercase tracking-widest" style="color: #888;">Journal Author</p>
+                <h3 class="text-3xl font-extrabold leading-tight">Cyrus Dominic</h3>
+                <p class="text-xl font-medium" style="color: #666;">Manalili</p>
+            </div>
+            <img 
+                src="assets/photo.jpg" 
+                class="w-24 h-24 object-cover rounded-full border-4" style="border-color: var(--accent-dark);"
+                alt="Profile Picture"
+            />
+        </div>
+    </div>
+
+    <div id="journalContainer" class="mt-4">
+        <div id="journal-page">
+            
+            <div class="page-header">
+                <p class="pageCategory text-sm tracking-widest mb-1">Category</p>
+                <h1 class="pageTitle">Title</h1>
+            </div>
+            <div class="pageContent leading-relaxed">
+            </div>
+            <div class="absolute bottom-4 left-6 text-sm font-semibold">
+                <p class="pageNumber"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex space-x-4 mt-8 w-full max-w-lg justify-center">
+        <button id="prevBtn" class="nav-btn py-3 px-8 rounded-full">
+            &larr; Previous Page
+        </button>
+        <button id="nextBtn" class="nav-btn py-3 px-8 rounded-full">
+            Next Page &rarr;
+        </button>
+    </div>
+    
+</body>
+</html>
